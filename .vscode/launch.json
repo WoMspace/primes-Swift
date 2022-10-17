@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug primes",
+            "program": "${workspaceFolder:primes-Swift}/.build/debug/primes",
+            "args": [],
+            "cwd": "${workspaceFolder:primes-Swift}",
+            "preLaunchTask": "swift: Build Debug primes"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release primes",
+            "program": "${workspaceFolder:primes-Swift}/.build/release/primes",
+            "args": [],
+            "cwd": "${workspaceFolder:primes-Swift}",
+            "preLaunchTask": "swift: Build Release primes"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--product",
+				"primes"
+			],
+			"cwd": "/Users/sasha/Projects/primes/primes-Swift",
+			"problemMatcher": [
+				"$swiftc"
+			],
+			"group": "build",
+			"label": "swift: Build Debug primes",
+			"detail": "swift build --product primes"
+		}
+	]
+}
