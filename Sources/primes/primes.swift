@@ -9,10 +9,10 @@ struct primes_swift: ParsableCommand {
     @Option(name: [.customShort("g"), .customLong("goal")], help: "The number of primes to search for.")
     var primeGoal: UInt = 1_000_000
 
-    @Option(name: [.customShort("m"), .customLong("major")], help: "How often to report major statistics.")
+    @Option(name: [.customShort("m"), .customLong("major")], help: "How often to report major statistics. Set to 0 to disable.")
     var majorInterval: UInt = 1_000_000
 
-    @Option(name: [.customShort("n"), .customLong("minor")], help: "How often to report minor statistics.")
+    @Option(name: [.customShort("n"), .customLong("minor")], help: "How often to report minor statistics. Set to 0 to disable.")
     var minorInterval: UInt = 10_000
 
     @Flag var verbose
@@ -34,10 +34,10 @@ struct primes_swift: ParsableCommand {
         for candidate in stride(from: 5, to: loopEnd, by: 2) {
             if checkPrime(candidate: candidate) {
                 primes.append(candidate)
-                if(UInt(primes.count + 1) % majorInterval == 0) {
+                if(majorInterval != 0 && UInt(primes.count + 1) % majorInterval == 0) {
                     majorReport(indexOfLast: primes.count)
                 }
-                else if UInt(primes.count + 1) % minorInterval == 0 {
+                else if minorInterval != 0 && UInt(primes.count + 1) % minorInterval == 0 {
                     minorReport(indexOfLast: primes.count - 1)
                 }
                 if(primes.count >= primeGoal) {
@@ -59,6 +59,7 @@ struct primes_swift: ParsableCommand {
     }
 
         func minorReport(indexOfLast: Int) {
+            if(minorInterval == 0) { return }
             // For Nth prime, print
             // N | prime | elapsed
             let nth = UInt(indexOfLast + 1) / minorInterval
@@ -80,6 +81,7 @@ struct primes_swift: ParsableCommand {
         }
 
         func majorReport(indexOfLast: Int) {
+            if(majorInterval == 0) { return }
             let avg = Double(majorInterval) / majorTimer.elapsed()
 
             let formatter = NumberFormatter()
@@ -87,7 +89,7 @@ struct primes_swift: ParsableCommand {
             formatter.maximumFractionDigits = 3
             let formattedTimer = formatter.string(from: majorTimer.elapsed() as NSNumber) ?? "ERR"
             let formattedAvg = formatter.string(from: avg as NSNumber) ?? "ERR"
-            let formattedLast = formatter.string(from: majorInterval as NSNumber) ?? "ERR"
+            let formattedLast = numlang.getName(num: majorInterval)
 
             print("Last \(formattedLast) took \(formattedTimer) seconds")
             print("Average speed: \(formattedAvg) primes/second")
