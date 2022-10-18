@@ -1,4 +1,5 @@
-import Foundation
+import struct Foundation.Date
+
 
 struct Timer {
 
@@ -11,7 +12,7 @@ struct Timer {
         self.startTime = nil;
     }
 
-    mutating func elapsed() -> TimeInterval {
+    mutating func elapsed() -> Double {
         return -(self.startTime?.timeIntervalSinceNow ?? 0)
     }
 }
