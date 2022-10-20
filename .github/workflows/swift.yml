@@ -1,0 +1,46 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version number.'
+        required: true
+      release_notes:
+        description: 'Release notes. (optional)'
+        required: false
+
+jobs:
+
+  prepare_release:
+    name: Prepare Release
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create_release.outputs.id }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: Release ${{ github.event.inputs.version }}
+          body: ${{ github.event.inputs.release_notes }}
+          draft: true
+
+  build-mac:
+    runs-on: macos-latest
+    needs: [prepare_release]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build x64
+      run: swift build -v -c release --product primes --arch x64
+    - name: Run tests
+      run: swift test -v
+    - name: Build arm64
+      run: swift builc -v -c release --product primes --arch x64
+      
