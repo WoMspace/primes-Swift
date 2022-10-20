@@ -12,5 +12,8 @@ let package = Package(
         .executableTarget(
             name: "primes",
             dependencies: [.product(name: "ArgumentParser", package: "swift-argument-parser")]),
+        .testTarget(
+            name: "primesTests",
+            dependencies: ["primes"])
     ]
 )

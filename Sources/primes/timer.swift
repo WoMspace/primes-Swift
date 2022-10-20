@@ -1,6 +1,5 @@
 import struct Foundation.Date
 
-
 struct Timer {
 
     private var startTime: Date?

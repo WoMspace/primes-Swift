@@ -1,4 +1,3 @@
-import Foundation
 import ArgumentParser
 
 @main
@@ -25,8 +24,6 @@ struct primes_swift: ParsableCommand {
 
         print("Searching for primes")
         let loopEnd = maxCandidate ?? UInt.max
-        
-        // var primes: [UInt] = [3]
         
         majorTimer.start()
         minorTimer.start()
@@ -69,10 +66,7 @@ struct primes_swift: ParsableCommand {
                 timeMessage = "\(Int(minorTimer.elapsed() * 1000))ms"
             }
             else {
-                let formatter = NumberFormatter()
-                formatter.numberStyle = .decimal
-                formatter.maximumFractionDigits = 3
-                let formattedValue: String = formatter.string(from: minorTimer.elapsed() as NSNumber) ?? "ERR"
+                let formattedValue = numlang.decimalPlaces(num: minorTimer.elapsed(), places: 3)
                 timeMessage = formattedValue + "s"
             }
             minorTimer.start()
@@ -83,12 +77,8 @@ struct primes_swift: ParsableCommand {
         func majorReport(indexOfLast: Int) {
             if(majorInterval == 0) { return }
             let avg = Double(majorInterval) / majorTimer.elapsed()
-
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.maximumFractionDigits = 3
-            let formattedTimer = formatter.string(from: majorTimer.elapsed() as NSNumber) ?? "ERR"
-            let formattedAvg = formatter.string(from: avg as NSNumber) ?? "ERR"
+            let formattedTimer = numlang.decimalPlaces(num: majorTimer.elapsed(), places: 3)
+            let formattedAvg = numlang.decimalPlaces(num: avg, places: 3)
             let formattedLast = numlang.getName(num: majorInterval)
 
             print("Last \(formattedLast) took \(formattedTimer) seconds")
